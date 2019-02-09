@@ -81,14 +81,18 @@ class MakeSkeletonCommand extends Commander
         );
     }
 
-    /** 1. Copy Stub */
+    /**
+     * 1. Copy Stub
+     */
     private function copyStubs()
     {
         $stubsDir = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'stubs';
         $this->filesystem->copyDirectory($stubsDir, $this->directory);
     }
 
-    /** 2. Update Package Name and Autoload */
+    /**
+     * 2. Update Package Name and Autoload
+     */
     private function updatePackageNameAndAutoload()
     {
         $composerJson = $this->package_path . 'composer.json';
@@ -107,11 +111,13 @@ class MakeSkeletonCommand extends Commander
         );
     }
 
-    /** 3. Update Service Provider  */
+    /**
+     * 3. Update Service Provider
+     */
     private function updateServiceProvider()
     {
         $dummyProvider   = $this->package_src_path . 'PackagerDummyServiceProvider.php';
-        $packageProvider = $this->package_src_path . $this->getQualifiedClassName($this->package) . 'ServiceProvider.php';
+        $packageProvider = $this->package_src_path . 'Providers/' . $this->getQualifiedClassName($this->package) . 'ServiceProvider.php';
         $this->filesystem->move($dummyProvider, $packageProvider, true);
         $this->replace(
             [
@@ -126,11 +132,13 @@ class MakeSkeletonCommand extends Commander
         );
     }
 
-    /** 4. Update Facade  */
+    /**
+     * 4. Update Facade
+     */
     private function updateFacade()
     {
         $dummyFacade = $this->package_src_path . 'PackagerDummyFacade.php';
-        $facade      = $this->package_src_path . $this->getQualifiedClassName($this->package) . 'Facade.php';
+        $facade      = $this->package_src_path . 'Facades/' . $this->getQualifiedClassName($this->package) . 'Facade.php';
 
         $this->filesystem->move($dummyFacade, $facade, true);
         $this->replace(
@@ -150,7 +158,9 @@ class MakeSkeletonCommand extends Commander
         );
     }
 
-    /** 5. Update TestCase.php */
+    /**
+     * 5. Update TestCase.php
+     */
     private function updateTestCase()
     {
         $files = [
@@ -175,7 +185,9 @@ class MakeSkeletonCommand extends Commander
         }
     }
 
-    /** 6. Update README.md */
+    /**
+     * 6. Update README.md
+     */
     private function updateReadme()
     {
         $this->replace(
@@ -197,7 +209,9 @@ class MakeSkeletonCommand extends Commander
         );
     }
 
-    /** 7. Initialise Git, install composer dependencies */
+    /**
+     * 7. Initialise Git, install composer dependencies
+     */
     private function initRepository()
     {
         chdir($this->directory);
